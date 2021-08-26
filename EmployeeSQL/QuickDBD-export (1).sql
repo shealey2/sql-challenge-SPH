@@ -16,16 +16,12 @@ CREATE TABLE "departments" (
 -- Address1 string
 -- Address2 NULL string
 -- Address3 NULL string
-CREATE TABLE "dept_emp" (
-    "emp_no" varchar   NOT NULL,
-    "dept_no" varchar   NOT NULL
-);
-
--- TotalAmount money
--- OrderStatusID int FK >- os.OrderStatusID
-CREATE TABLE "dept_manager" (
-    "dept_no" varchar   NOT NULL,
-    "emp_no" varchar   NOT NULL
+CREATE TABLE "titles" (
+    "title_id" varchar   NOT NULL,
+    "title" varchar   NOT NULL,
+    CONSTRAINT "pk_titles" PRIMARY KEY (
+        "title_id"
+     )
 );
 
 CREATE TABLE "employees" (
@@ -41,18 +37,25 @@ CREATE TABLE "employees" (
      )
 );
 
+CREATE TABLE "dept_emp" (
+    "emp_no" varchar   NOT NULL,
+    "dept_no" varchar   NOT NULL
+);
+
+-- TotalAmount money
+-- OrderStatusID int FK >- os.OrderStatusID
+CREATE TABLE "dept_manager" (
+    "dept_no" varchar   NOT NULL,
+    "emp_no" varchar   NOT NULL
+);
+
 CREATE TABLE "salaries" (
     "emp_no" varchar   NOT NULL,
     "salary" int   NOT NULL
 );
 
-CREATE TABLE "titles" (
-    "title_id" varchar   NOT NULL,
-    "title" varchar   NOT NULL,
-    CONSTRAINT "pk_titles" PRIMARY KEY (
-        "title_id"
-     )
-);
+ALTER TABLE "employees" ADD CONSTRAINT "fk_employees_emp_title" FOREIGN KEY("emp_title")
+REFERENCES "titles" ("title_id");
 
 ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_emp_no" FOREIGN KEY("emp_no")
 REFERENCES "employees" ("emp_no");
@@ -65,9 +68,6 @@ REFERENCES "departments" ("dept_no");
 
 ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_emp_no" FOREIGN KEY("emp_no")
 REFERENCES "employees" ("emp_no");
-
-ALTER TABLE "employees" ADD CONSTRAINT "fk_employees_emp_title" FOREIGN KEY("emp_title")
-REFERENCES "titles" ("title_id");
 
 ALTER TABLE "salaries" ADD CONSTRAINT "fk_salaries_emp_no" FOREIGN KEY("emp_no")
 REFERENCES "employees" ("emp_no");
